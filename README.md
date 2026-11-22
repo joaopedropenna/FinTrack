@@ -6,7 +6,7 @@
 ---
 
 ## 👥 Integrantes da Equipe
-- Gabriel de Almeida Rezende Nunes
+- Gabriel de Almeida Rezende Nunes ✅
 - Guilherme de Oliveira Ferreira
 - João Pedro Penna de Oliveira Silva ✅
 - João Vitor Dias de Almeida
