@@ -1,0 +1,20 @@
+{
+  "name": "fintrack-root",
+  "version": "1.0.0",
+  "description": "Monorepo FinTrack - Aplicativo de Educação Financeira para Crianças e Jovens",
+  "scripts": {
+    "web": "npm --prefix frontend run web",
+    "frontend": "npm --prefix frontend run web",
+    "start": "npm --prefix frontend start",
+    "backend": "npm --prefix backend run dev",
+    "install:all": "npm --prefix frontend install && npm --prefix backend install"
+  },
+  "keywords": [
+    "fintrack",
+    "expo",
+    "react-native",
+    "express"
+  ],
+  "author": "Equipe FinTrack",
+  "license": "ISC"
+}
