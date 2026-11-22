@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function BottomNavBar({ activeTab, onSelectTab }) {
+  // As 4 abas oficiais do aplicativo do jovem conforme o Figma:
+  // Início, Metas, Aprender, Perfil
   const tabs = [
     { id: 'Home', label: 'Início', icon: 'home' },
-    { id: 'Metas', label: 'Metas', icon: 'flag' },
-    { id: 'Aprender', label: 'Aprender', icon: 'book' },
-    { id: 'PainelPais', label: 'Pais', icon: 'shield' }
+    { id: 'Metas', label: 'Metas', icon: 'crosshair' },
+    { id: 'Aprender', label: 'Aprender', icon: 'book-open' },
+    { id: 'Perfil', label: 'Perfil', icon: 'user' }
   ];
 
   return (
@@ -20,6 +22,7 @@ export default function BottomNavBar({ activeTab, onSelectTab }) {
               key={tab.id}
               style={styles.navItem}
               onPress={() => onSelectTab(tab.id)}
+              activeOpacity={0.8}
             >
               <View
                 style={[
@@ -55,27 +58,26 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 72,
+    height: 66,
     backgroundColor: 'rgba(206, 237, 255, 0.98)',
     borderTopWidth: 1,
     borderTopColor: '#b4d6ef',
-    paddingBottom: 4
+    justifyContent: 'center'
   },
   navList: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-    height: '100%'
+    alignItems: 'center'
   },
   navItem: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 72
+    width: 68
   },
   iconCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center'
   },

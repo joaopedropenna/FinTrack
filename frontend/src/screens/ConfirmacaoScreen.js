@@ -15,32 +15,20 @@ export default function ConfirmacaoScreen({ onNavigate }) {
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       <View style={styles.container}>
 
-        {/* CÍRCULO CENTRAL DE SUCESSO */}
-        <View style={styles.circleOuter}>
-          <View style={styles.circleInner}>
-            <Ionicons name="checkmark-done" size={72} color="#004590" />
-          </View>
+        {/* CÍRCULO VERDE COM CHECKMARK DO FIGMA */}
+        <View style={styles.circleGreen}>
+          <Ionicons name="checkbox-outline" size={90} color="#ffffff" />
         </View>
 
         <Text style={styles.title}>Pedido Enviado!</Text>
-        <Text style={styles.subtitle}>
-          Sua solicitação de despesa foi enviada para o Painel do Responsável e aguarda aprovação.
-        </Text>
 
-        {/* BOTÃO PRINCIPAL */}
+        {/* BOTÃO VOLTAR AO INÍCIO */}
         <TouchableOpacity
           style={styles.primaryButton}
           onPress={() => onNavigate('Home')}
+          activeOpacity={0.85}
         >
           <Text style={styles.primaryButtonText}>Voltar ao Início</Text>
-        </TouchableOpacity>
-
-        {/* ATALHO MODO PAIS (Para testar o fluxo de aprovação) */}
-        <TouchableOpacity
-          style={styles.secondaryButton}
-          onPress={() => onNavigate('PainelPais')}
-        >
-          <Text style={styles.secondaryButtonText}>Ir para Painel dos Pais (Aprovar)</Text>
         </TouchableOpacity>
 
       </View>
@@ -57,37 +45,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 28
+    paddingHorizontal: 24
   },
-  circleOuter: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    backgroundColor: '#ceedff',
+  circleGreen: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: '#33bc55',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 28
-  },
-  circleInner: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
-    backgroundColor: '#9ed5fd',
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginBottom: 24,
+    shadowColor: '#33bc55',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 8
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
     color: '#0c121a',
-    marginBottom: 10
-  },
-  subtitle: {
-    fontSize: 15,
-    color: '#3e4858',
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 36
+    marginBottom: 80
   },
   primaryButton: {
     backgroundColor: '#004590',
@@ -95,27 +73,11 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: 28,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12
+    alignItems: 'center'
   },
   primaryButtonText: {
     color: '#ffffff',
     fontSize: 16,
-    fontWeight: 'bold'
-  },
-  secondaryButton: {
-    backgroundColor: '#ceedff',
-    borderWidth: 1,
-    borderColor: '#b4d6ef',
-    width: '100%',
-    height: 52,
-    borderRadius: 26,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  secondaryButtonText: {
-    color: '#004590',
-    fontSize: 14,
     fontWeight: 'bold'
   }
 });

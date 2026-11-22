@@ -7,11 +7,10 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  ScrollView,
-  Alert
+  ScrollView
 } from 'react-native';
 import { useFinance } from '../context/FinanceContext';
-import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, Feather } from '@expo/vector-icons';
 
 export default function NovaDespesaScreen({ onNavigate }) {
   const { limiteDiario, solicitarDespesa } = useFinance();
@@ -21,20 +20,18 @@ export default function NovaDespesaScreen({ onNavigate }) {
   const [categoriaSelecionada, setCategoriaSelecionada] = useState('Compras');
 
   const categorias = [
-    { id: 'Compras', nome: 'Compras', icone: 'shopping-bag', lib: 'FontAwesome5' },
-    { id: 'Jogos', nome: 'Jogos', icone: 'gamepad', lib: 'FontAwesome5' },
-    { id: 'Comida', nome: 'Comida', icone: 'utensils', lib: 'FontAwesome5' },
-    { id: 'Transporte', nome: 'Transporte', icone: 'bus', lib: 'FontAwesome5' },
-    { id: 'Presente', nome: 'Presente', icone: 'gift', lib: 'FontAwesome5' },
-    { id: 'Outros', nome: 'Outros', icone: 'tag', lib: 'FontAwesome5' }
+    { id: 'Compras', nome: 'Compras', icone: 'shopping-bag' },
+    { id: 'Jogos', nome: 'Jogos', icone: 'gamepad' },
+    { id: 'Comida', nome: 'Comida', icone: 'utensils' },
+    { id: 'Transporte', nome: 'Transporte', icone: 'bus' },
+    { id: 'Presente', nome: 'Presente', icone: 'gift' },
+    { id: 'Outros', nome: 'Outros', icone: 'ellipsis-h' }
   ];
 
-  // Teclado numérico interativo
   const handleNumero = (num) => {
     if (valorDigitado === '0') {
       setValorDigitado(num);
     } else {
-      // Limite de dígitos para evitar overflow
       if (valorDigitado.length < 8) {
         setValorDigitado(prev => prev + num);
       }
@@ -86,6 +83,7 @@ export default function NovaDespesaScreen({ onNavigate }) {
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => onNavigate('Home')}
+            activeOpacity={0.8}
           >
             <Ionicons name="arrow-back" size={20} color="#004590" />
           </TouchableOpacity>
@@ -129,6 +127,7 @@ export default function NovaDespesaScreen({ onNavigate }) {
                     isSelected ? styles.categorySelected : styles.categoryUnselected
                   ]}
                   onPress={() => setCategoriaSelecionada(cat.id)}
+                  activeOpacity={0.8}
                 >
                   <FontAwesome5
                     name={cat.icone}
@@ -153,40 +152,71 @@ export default function NovaDespesaScreen({ onNavigate }) {
         <View style={styles.keypad}>
           <View style={styles.keypadRow}>
             {['1', '2', '3'].map((n) => (
-              <TouchableOpacity key={n} style={styles.keypadKey} onPress={() => handleNumero(n)}>
+              <TouchableOpacity
+                key={n}
+                style={styles.keypadKey}
+                onPress={() => handleNumero(n)}
+                activeOpacity={0.7}
+              >
                 <Text style={styles.keypadText}>{n}</Text>
               </TouchableOpacity>
             ))}
           </View>
           <View style={styles.keypadRow}>
             {['4', '5', '6'].map((n) => (
-              <TouchableOpacity key={n} style={styles.keypadKey} onPress={() => handleNumero(n)}>
+              <TouchableOpacity
+                key={n}
+                style={styles.keypadKey}
+                onPress={() => handleNumero(n)}
+                activeOpacity={0.7}
+              >
                 <Text style={styles.keypadText}>{n}</Text>
               </TouchableOpacity>
             ))}
           </View>
           <View style={styles.keypadRow}>
             {['7', '8', '9'].map((n) => (
-              <TouchableOpacity key={n} style={styles.keypadKey} onPress={() => handleNumero(n)}>
+              <TouchableOpacity
+                key={n}
+                style={styles.keypadKey}
+                onPress={() => handleNumero(n)}
+                activeOpacity={0.7}
+              >
                 <Text style={styles.keypadText}>{n}</Text>
               </TouchableOpacity>
             ))}
           </View>
           <View style={styles.keypadRow}>
-            <TouchableOpacity style={styles.keypadKey} onPress={handleVirgula}>
+            <TouchableOpacity
+              style={styles.keypadKey}
+              onPress={handleVirgula}
+              activeOpacity={0.7}
+            >
               <Text style={styles.keypadText}>,</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.keypadKey} onPress={() => handleNumero('0')}>
+            <TouchableOpacity
+              style={styles.keypadKey}
+              onPress={() => handleNumero('0')}
+              activeOpacity={0.7}
+            >
               <Text style={styles.keypadText}>0</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.keypadKey} onPress={handleApagar}>
+            <TouchableOpacity
+              style={styles.keypadKey}
+              onPress={handleApagar}
+              activeOpacity={0.7}
+            >
               <Ionicons name="backspace-outline" size={24} color="#0c121a" />
             </TouchableOpacity>
           </View>
         </View>
 
         {/* BOTÃO CONFIRMAR DESPESA */}
-        <TouchableOpacity style={styles.confirmButton} onPress={handleConfirmar}>
+        <TouchableOpacity
+          style={styles.confirmButton}
+          onPress={handleConfirmar}
+          activeOpacity={0.85}
+        >
           <Text style={styles.confirmButtonText}>Confirmar Despesa</Text>
         </TouchableOpacity>
 
@@ -226,8 +256,8 @@ const styles = StyleSheet.create({
   },
   valueCard: {
     backgroundColor: '#004590',
-    borderRadius: 28,
-    paddingVertical: 22,
+    borderRadius: 36,
+    paddingVertical: 24,
     alignItems: 'center',
     marginBottom: 20
   },
@@ -238,7 +268,7 @@ const styles = StyleSheet.create({
   },
   valueAmount: {
     color: '#ffffff',
-    fontSize: 34,
+    fontSize: 36,
     fontWeight: 'bold',
     marginVertical: 4,
     letterSpacing: -0.5
@@ -260,9 +290,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ceedff',
     borderWidth: 1,
     borderColor: '#b4d6ef',
-    borderRadius: 24,
-    paddingHorizontal: 16,
-    height: 52,
+    borderRadius: 28,
+    paddingHorizontal: 18,
+    height: 54,
     justifyContent: 'center'
   },
   textInput: {
@@ -279,8 +309,8 @@ const styles = StyleSheet.create({
   },
   categoryButton: {
     width: '31%',
-    height: 68,
-    borderRadius: 20,
+    height: 72,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10
@@ -298,7 +328,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 12,
     fontWeight: '500',
-    marginTop: 4
+    marginTop: 6
   },
   categoryTextSelected: {
     color: '#ffffff'
@@ -316,9 +346,9 @@ const styles = StyleSheet.create({
   },
   keypadKey: {
     width: '31%',
-    height: 52,
+    height: 54,
     backgroundColor: '#ceedff',
-    borderRadius: 20,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -333,7 +363,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 6
   },
   confirmButtonText: {
     color: '#ffffff',

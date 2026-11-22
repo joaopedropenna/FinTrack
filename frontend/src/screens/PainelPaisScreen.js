@@ -6,13 +6,12 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  ScrollView,
-  Alert
+  ScrollView
 } from 'react-native';
 import { useFinance } from '../context/FinanceContext';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function PainelPaisScreen({ onNavigate }) {
+export default function PainelPaisScreen({ onBackToChild }) {
   const {
     limiteDiario,
     setLimiteDiario,
@@ -24,7 +23,7 @@ export default function PainelPaisScreen({ onNavigate }) {
   const totalPendente = aprovacoesPendentes.reduce((acc, curr) => acc + curr.valor, 0);
 
   const handleAjustarLimites = () => {
-    const novo = prompt('Informe o novo limite diário (R$):', String(limiteDiario));
+    const novo = prompt('Defina o novo limite diário de gastos do dependente (R$):', String(limiteDiario));
     if (novo) {
       const val = parseFloat(novo.replace(',', '.'));
       if (!isNaN(val) && val >= 0) {
@@ -38,11 +37,12 @@ export default function PainelPaisScreen({ onNavigate }) {
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
 
-        {/* HEADER */}
+        {/* HEADER COM BOTÃO DE VOLTAR AO APP DO FILHO */}
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => onNavigate('Home')}
+            onPress={onBackToChild}
+            activeOpacity={0.8}
           >
             <Ionicons name="arrow-back" size={20} color="#004590" />
           </TouchableOpacity>
@@ -51,12 +51,12 @@ export default function PainelPaisScreen({ onNavigate }) {
 
         {/* CARD VALOR TOTAL PENDENTE */}
         <View style={styles.valueCard}>
-          <Text style={styles.valueLabel}>Total em Aprovação</Text>
+          <Text style={styles.valueLabel}>Valor</Text>
           <Text style={styles.valueAmount}>
             R$ {totalPendente.toFixed(2).replace('.', ',')}
           </Text>
           <Text style={styles.limitLabel}>
-            Limite diário atual: R$ {limiteDiario.toFixed(2).replace('.', ',')}
+            Limite diário: R$ {limiteDiario.toFixed(2).replace('.', ',')}
           </Text>
         </View>
 
@@ -65,26 +65,27 @@ export default function PainelPaisScreen({ onNavigate }) {
 
         {aprovacoesPendentes.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Ionicons name="checkmark-circle-outline" size={48} color="#33bc55" />
-            <Text style={styles.emptyText}>Nenhuma despesa pendente de aprovação!</Text>
+            <Ionicons name="checkmark-circle-outline" size={44} color="#33bc55" />
+            <Text style={styles.emptyText}>Todas as despesas foram avaliadas!</Text>
           </View>
         ) : (
           aprovacoesPendentes.map((item) => (
             <View key={item.id} style={styles.itemWrapper}>
               
-              {/* CARD DESCRITIVO DA DESPESA */}
-              <View style={styles.itemCard}>
+              {/* CARD PÍLULA AZUL CLARA DO GASTO */}
+              <View style={styles.itemPill}>
                 <Text style={styles.itemText}>
                   {item.icone || '🏷️'} {item.descricao} - R${' '}
                   {item.valor.toFixed(2).replace('.', ',')}
                 </Text>
               </View>
 
-              {/* BOTÕES DE AÇÃO: APROVAR E NEGAR */}
+              {/* BOTÕES LADO A LADO: APROVAR E NEGAR */}
               <View style={styles.actionsRow}>
                 <TouchableOpacity
                   style={styles.approveButton}
                   onPress={() => aprovarDespesa(item.id)}
+                  activeOpacity={0.85}
                 >
                   <Text style={styles.buttonText}>Aprovar</Text>
                 </TouchableOpacity>
@@ -92,6 +93,7 @@ export default function PainelPaisScreen({ onNavigate }) {
                 <TouchableOpacity
                   style={styles.denyButton}
                   onPress={() => negarDespesa(item.id)}
+                  activeOpacity={0.85}
                 >
                   <Text style={styles.buttonText}>Negar</Text>
                 </TouchableOpacity>
@@ -102,7 +104,11 @@ export default function PainelPaisScreen({ onNavigate }) {
         )}
 
         {/* BOTÃO AJUSTAR LIMITES */}
-        <TouchableOpacity style={styles.adjustButton} onPress={handleAjustarLimites}>
+        <TouchableOpacity
+          style={styles.adjustButton}
+          onPress={handleAjustarLimites}
+          activeOpacity={0.85}
+        >
           <Text style={styles.adjustButtonText}>Ajustar Limites</Text>
         </TouchableOpacity>
 
@@ -142,8 +148,8 @@ const styles = StyleSheet.create({
   },
   valueCard: {
     backgroundColor: '#004590',
-    borderRadius: 28,
-    paddingVertical: 22,
+    borderRadius: 36,
+    paddingVertical: 24,
     alignItems: 'center',
     marginBottom: 24
   },
@@ -154,7 +160,7 @@ const styles = StyleSheet.create({
   },
   valueAmount: {
     color: '#ffffff',
-    fontSize: 34,
+    fontSize: 36,
     fontWeight: 'bold',
     marginVertical: 4,
     letterSpacing: -0.5
@@ -168,13 +174,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#0c121a',
     textAlign: 'center',
-    marginBottom: 16
+    marginBottom: 18
   },
   emptyContainer: {
     backgroundColor: '#ceedff',
     borderWidth: 1,
     borderColor: '#b4d6ef',
-    borderRadius: 20,
+    borderRadius: 24,
     padding: 24,
     alignItems: 'center',
     marginBottom: 20
@@ -188,12 +194,12 @@ const styles = StyleSheet.create({
   itemWrapper: {
     marginBottom: 22
   },
-  itemCard: {
+  itemPill: {
     backgroundColor: '#ceedff',
     borderWidth: 1,
     borderColor: '#b4d6ef',
-    borderRadius: 24,
-    height: 52,
+    borderRadius: 28,
+    height: 54,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10
@@ -209,17 +215,17 @@ const styles = StyleSheet.create({
   },
   approveButton: {
     width: '48%',
-    height: 52,
+    height: 54,
     backgroundColor: '#33bc55',
-    borderRadius: 24,
+    borderRadius: 27,
     justifyContent: 'center',
     alignItems: 'center'
   },
   denyButton: {
     width: '48%',
-    height: 52,
+    height: 54,
     backgroundColor: '#d92f32',
-    borderRadius: 24,
+    borderRadius: 27,
     justifyContent: 'center',
     alignItems: 'center'
   },
