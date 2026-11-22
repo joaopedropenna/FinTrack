@@ -1,7 +1,7 @@
 # 📱 FinTrack — Aplicativo de Educação Financeira para Crianças e Jovens
 
 > ⚠️ **AVISO INTERNO DA EQUIPE:**  
-> Este README serve como **guia prático de desenvolvimento e alinhamento interno para nós do grupo**. Ele será alterado e revisado por nós posteriormente para a versão oficial pública de entrega final (menções honrosas à **Profa. Ma. Laila Alves Santos**).
+> Este README serve como **guia prático de desenvolvimento e alinhamento interno para o nosso grupo**. Ele será alterado e revisado por nós posteriormente para a versão oficial pública de entrega final (com as devidas menções honrosas e agradecimentos à **Profa. Ma. Laila Alves Santos**).
 
 ---
 
@@ -41,15 +41,18 @@ O **FinTrack** é uma solução digital criada para auxiliar crianças e adolesc
 
 ```
 FinTrack/
+├── package.json                # Atalhos de execução na raiz (Frontend + Backend)
 ├── frontend/                   # Interface Mobile e Web (React Native / Expo)
 │   ├── src/
 │   │   ├── components/         # Barra de navegação inferior (BottomNavBar)
 │   │   ├── context/            # Estado global (FinanceContext - saldo, metas, aprovações)
-│   │   └── screens/            # As 5 telas do Figma:
+│   │   └── screens/            # As telas do aplicativo:
 │   │       ├── HomeScreen.js           # Dashboard do Léo (Saldo, Metas, Dicas de IA, Vídeos)
-│   │       ├── NovaDespesaScreen.js    # Teclado numérico na tela, categorias e limite
+│   │       ├── MetasScreen.js          # Minhas Metas detalhadas e dicas de economia
+│   │       ├── NovaDespesaScreen.js    # Teclado numérico em tela, categorias e limite
 │   │       ├── ConfirmacaoScreen.js    # Pedido Enviado!
 │   │       ├── AprenderScreen.js       # Pontuação (150 pts) e vídeos educativos
+│   │       ├── PerfilScreen.js         # Perfil do dependente e alternância de papel
 │   │       └── PainelPaisScreen.js     # Painel de aprovações do responsável (RF08)
 │   ├── App.js
 │   ├── app.json
@@ -72,90 +75,90 @@ FinTrack/
 
 ---
 
-## 🖥️ ONDE E COMO EXECUTAR OS COMANDOS (Passo a Passo Detalhado)
+## 🖥️ ONDE E COMO EXECUTAR OS COMANDOS (Passo a Passo)
 
-### ❓ "Onde eu digito esses comandos?"
-Você **NÃO precisa abrir nenhum programa externo**. Tudo é feito diretamente **dentro do próprio VS Code**:
+### Onde digitar os comandos:
+Tudo deve ser executado diretamente **dentro do próprio VS Code**:
 
-1. Abra a pasta `FinTrack` no seu **VS Code**.
-2. Olhe na barra de menus no topo da janela do VS Code e clique em:  
-   👉 **Terminal** > **New Terminal** (Novo Terminal)  
-   *(Atalho no teclado: `Ctrl + '`)*
-3. Vai se abrir uma janelinha preta na **parte inferior da tela**. É exatamente nela que você digita os comandos abaixo.
+1. Abra a pasta `FinTrack` no **VS Code**.
+2. No menu superior do VS Code, clique em:  
+   👉 **Terminal** > **New Terminal** (ou atalho `Ctrl + '`).
+3. Uma janela preta abrirá na **parte inferior da tela**.
 
 ---
 
-### 1️⃣ Como Rodar o Aplicativo (Frontend)
+### Método Rápido (Executando diretamente da raiz `FinTrack>`)
 
-Com a janela do terminal aberta no VS Code, digite um comando por vez e aperte **Enter**:
+Com o terminal aberto na pasta raiz do projeto (`C:\Dev\FinTrack>`):
 
+#### 1. Instalar todas as dependências de uma vez só:
 ```bash
-# 1. Entra na pasta do frontend:
-cd frontend
+npm run install:all
+```
+*(Esse comando instala as dependências do Frontend e do Backend ao mesmo tempo).*
 
-# 2. Baixa as bibliotecas do aplicativo (só precisa fazer na primeira vez):
-npm install
-
-# 3. Inicia o aplicativo no seu navegador de internet:
+#### 2. Iniciar o Aplicativo (Frontend):
+```bash
 npm run web
 ```
+*(O Expo iniciará e abrirá automaticamente o aplicativo no seu navegador).*
 
-> **O que vai acontecer?**  
-> O Expo vai inicializar e abrir automaticamente uma aba no seu Google Chrome/Edge com o celular funcionando e todas as telas navegáveis!  
-> *(Dica: Se quiser testar no seu celular físico, instale o app **Expo Go** na Google Play ou App Store e leia o QR Code que vai aparecer no terminal usando `npm start`).*
-
----
-
-### 2️⃣ Como Rodar o Servidor/API (Backend)
-
-O frontend e o backend rodam ao mesmo tempo. Para rodar o backend sem fechar o frontend:
-
-1. No canto superior direito da janelinha do terminal no VS Code, clique no ícone de **`+`** (Create New Terminal) para abrir uma **segunda aba de terminal**.
-2. Nessa nova aba, digite:
-
+#### 3. Iniciar o Servidor (Backend):
+Para rodar o backend junto com o frontend:
+1. Clique no botão de **`+`** no canto superior direito da janela do terminal no VS Code para abrir um segundo terminal.
+2. No segundo terminal, execute:
 ```bash
-# 1. Entra na pasta do backend:
-cd backend
-
-# 2. Instala as dependências da API:
-npm install
-
-# 3. Inicia o servidor em modo de desenvolvimento:
-npm run dev
+npm run backend
 ```
-
-> O servidor iniciará em `http://localhost:3000`.  
-> O teste de funcionamento estará ativo em `http://localhost:3000/api/health`.
+*(O servidor iniciará em `http://localhost:3000`).*
 
 ---
 
-## 🤝 Fluxo de Trabalho em Equipe no Git (Regras de Ouro)
+### Método Manual (Entrando nas subpastas)
 
-Para ninguém apagar o código do outro e não gerar conflitos:
+Caso prefira entrar individualmente em cada pasta:
 
-1. **Antes de começar qualquer tarefa, atualize seu código com o que o time fez:**
+- **Frontend:**
+  ```bash
+  cd frontend
+  npm install
+  npm run web
+  ```
+- **Backend:**
+  ```bash
+  cd backend
+  npm install
+  npm run dev
+  ```
+
+---
+
+## 🤝 Fluxo de Trabalho em Equipe no Git (Regras)
+
+Para evitar sobrescrita de código e conflitos entre os membros:
+
+1. **Atualizar o repositório local com as últimas alterações:**
    ```bash
    git checkout main
    git pull origin main
    ```
 
-2. **Crie uma branch própria para a sua tarefa (nunca programe direto na main):**
+2. **Criar uma branch individual para cada tarefa (nunca programar direto na main):**
    ```bash
-   git checkout -b feature/nome-da-sua-tarefa
-   # Exemplo: git checkout -b feature/tela-cadastro
+   git checkout -b feature/nome-da-tarefa
    ```
 
-3. **Faça as alterações nos arquivos e salve. Depois registre suas mudanças:**
+3. **Verificar o que foi alterado e salvar o commit:**
    ```bash
    git status
    git add .
-   git commit -m "feat: descreva aqui de forma simples o que você fez"
+   git commit -m "tipo: descricao clara do que foi desenvolvido"
    ```
 
-4. **Envie sua branch para o GitHub:**
+4. **Enviar a branch para o GitHub:**
    ```bash
-   git push -u origin feature/nome-da-sua-tarefa
+   git push -u origin feature/nome-da-tarefa
    ```
 
-5. **Abra o Pull Request:**  
-   Vá no link [github.com/joaopedropenna/FinTrack](https://github.com/joaopedropenna/FinTrack), clique no botão verde **Compare & pull request** e avise o grupo para revisarem e aprovarem!
+5. **Abrir Pull Request (PR):**  
+   Acesse [github.com/joaopedropenna/FinTrack](https://github.com/joaopedropenna/FinTrack), clique no botão **Compare & pull request** e comunique a equipe para revisão.
