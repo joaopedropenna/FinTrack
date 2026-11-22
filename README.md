@@ -1,7 +1,7 @@
 # 📱 FinTrack — Aplicativo de Educação Financeira para Crianças e Jovens
 
 > ⚠️ **AVISO INTERNO DA EQUIPE:**  
-> Este README serve como **guia prático de desenvolvimento e alinhamento interno para nós do grupo**. Ele será alterado e revisado por nós posteriormente para a versão oficial pública de entrega final (com todas as devidas menções honrosas e agradecimentos à **Profa. Ma. Laila Alves Santos**).
+> Este README serve como **guia prático de desenvolvimento e alinhamento interno para nós do grupo**. Ele será alterado e revisado por nós posteriormente para a versão oficial pública de entrega final (menções honrosas à **Profa. Ma. Laila Alves Santos**).
 
 ---
 
