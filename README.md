@@ -162,3 +162,11 @@ Para evitar sobrescrita de código e conflitos entre os membros:
 
 5. **Abrir Pull Request (PR):**  
    Acesse [github.com/joaopedropenna/FinTrack](https://github.com/joaopedropenna/FinTrack), clique no botão **Compare & pull request** e comunique a equipe para revisão.
+
+---
+
+### 💡 Nota da Equipe: Lista de "Colaboradores" na Barra Lateral do GitHub
+Na página inicial do repositório, na barra lateral direita, existe uma seção chamada **Colaboradores** (*Contributors* em inglês):
+- Essa seção contabiliza apenas **autores que já enviaram commits de código**.
+- Portanto, mesmo que você já tenha aceitado o convite de colaborador, o seu nome e foto só aparecerão nessa lista lateral **após o seu primeiro `git push`** ser enviado (o contador mudará para *Colaboradores 2*, *Colaboradores 3* sucessivamente conforme cada integrante do grupo comitar).
+- Desde que o seu convite tenha sido aceito em *Settings > Collaborators*, o seu acesso de envio e trabalho em equipe já está liberado!
