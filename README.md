@@ -1,7 +1,7 @@
 # 📱 FinTrack — Aplicativo de Educação Financeira para Crianças e Jovens
 
-Projeto desenvolvido para a disciplina de **Práticas Extensionistas Integradoras III**  
-**Docente:** Profa. Ma. Laila Alves Santos
+> ⚠️ **AVISO INTERNO DA EQUIPE:**  
+> Este README serve como **guia prático de desenvolvimento e alinhamento interno para nós do grupo**. Ele será alterado e revisado por nós posteriormente para a versão oficial pública de entrega final (com todas as devidas menções honrosas e agradecimentos à **Profa. Ma. Laila Alves Santos**).
 
 ---
 
@@ -43,12 +43,12 @@ O **FinTrack** é uma solução digital criada para auxiliar crianças e adolesc
 FinTrack/
 ├── frontend/                   # Interface Mobile e Web (React Native / Expo)
 │   ├── src/
-│   │   ├── components/         # Barra de navegação inferior e componentes reutilizáveis
-│   │   ├── context/            # Gerenciamento de estado global (FinanceContext)
-│   │   └── screens/            # Telas fiéis ao design do Figma:
-│   │       ├── HomeScreen.js           # Dashboard principal do dependente (Léo)
-│   │       ├── NovaDespesaScreen.js    # Teclado numérico customizado e categorias
-│   │       ├── ConfirmacaoScreen.js    # Feedback de envio do pedido
+│   │   ├── components/         # Barra de navegação inferior (BottomNavBar)
+│   │   ├── context/            # Estado global (FinanceContext - saldo, metas, aprovações)
+│   │   └── screens/            # As 5 telas do Figma:
+│   │       ├── HomeScreen.js           # Dashboard do Léo (Saldo, Metas, Dicas de IA, Vídeos)
+│   │       ├── NovaDespesaScreen.js    # Teclado numérico na tela, categorias e limite
+│   │       ├── ConfirmacaoScreen.js    # Pedido Enviado!
 │   │       ├── AprenderScreen.js       # Pontuação (150 pts) e vídeos educativos
 │   │       └── PainelPaisScreen.js     # Painel de aprovações do responsável (RF08)
 │   ├── App.js
@@ -72,59 +72,90 @@ FinTrack/
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 🖥️ ONDE E COMO EXECUTAR OS COMANDOS (Passo a Passo Detalhado)
 
-### Pré-requisitos
-- [Node.js](https://nodejs.org/) (versão LTS instalada)
-- [Git](https://git-scm.com/)
+### ❓ "Onde eu digito esses comandos?"
+Você **NÃO precisa abrir nenhum programa externo**. Tudo é feito diretamente **dentro do próprio VS Code**:
+
+1. Abra a pasta `FinTrack` no seu **VS Code**.
+2. Olhe na barra de menus no topo da janela do VS Code e clique em:  
+   👉 **Terminal** > **New Terminal** (Novo Terminal)  
+   *(Atalho no teclado: `Ctrl + '`)*
+3. Vai se abrir uma janelinha preta na **parte inferior da tela**. É exatamente nela que você digita os comandos abaixo.
 
 ---
 
-### 1. Executando o Frontend (Aplicativo)
+### 1️⃣ Como Rodar o Aplicativo (Frontend)
 
-Abra o terminal na pasta `frontend`:
+Com a janela do terminal aberta no VS Code, digite um comando por vez e aperte **Enter**:
+
 ```bash
+# 1. Entra na pasta do frontend:
 cd frontend
+
+# 2. Baixa as bibliotecas do aplicativo (só precisa fazer na primeira vez):
 npm install
+
+# 3. Inicia o aplicativo no seu navegador de internet:
 npm run web
 ```
-> O Expo abrirá automaticamente o aplicativo no seu navegador. Você também pode rodar no celular instalando o aplicativo **Expo Go** e lendo o QR Code exibido no terminal (`npm start`).
+
+> **O que vai acontecer?**  
+> O Expo vai inicializar e abrir automaticamente uma aba no seu Google Chrome/Edge com o celular funcionando e todas as telas navegáveis!  
+> *(Dica: Se quiser testar no seu celular físico, instale o app **Expo Go** na Google Play ou App Store e leia o QR Code que vai aparecer no terminal usando `npm start`).*
 
 ---
 
-### 2. Executando o Backend (API)
+### 2️⃣ Como Rodar o Servidor/API (Backend)
 
-Abra outro terminal na pasta `backend`:
+O frontend e o backend rodam ao mesmo tempo. Para rodar o backend sem fechar o frontend:
+
+1. No canto superior direito da janelinha do terminal no VS Code, clique no ícone de **`+`** (Create New Terminal) para abrir uma **segunda aba de terminal**.
+2. Nessa nova aba, digite:
+
 ```bash
+# 1. Entra na pasta do backend:
 cd backend
+
+# 2. Instala as dependências da API:
 npm install
+
+# 3. Inicia o servidor em modo de desenvolvimento:
 npm run dev
 ```
-> O servidor iniciará por padrão em `http://localhost:3000`. O endpoint de verificação estará ativo em `http://localhost:3000/api/health`.
+
+> O servidor iniciará em `http://localhost:3000`.  
+> O teste de funcionamento estará ativo em `http://localhost:3000/api/health`.
 
 ---
 
-## 🤝 Fluxo de Trabalho em Equipe no Git
+## 🤝 Fluxo de Trabalho em Equipe no Git (Regras de Ouro)
 
-Para manter o repositório organizado e sem conflitos:
+Para ninguém apagar o código do outro e não gerar conflitos:
 
-1. **Atualizar a main:**
+1. **Antes de começar qualquer tarefa, atualize seu código com o que o time fez:**
    ```bash
    git checkout main
    git pull origin main
    ```
-2. **Criar sua branch para a tarefa:**
+
+2. **Crie uma branch própria para a sua tarefa (nunca programe direto na main):**
    ```bash
-   git checkout -b feature/nome-da-tarefa
+   git checkout -b feature/nome-da-sua-tarefa
+   # Exemplo: git checkout -b feature/tela-cadastro
    ```
-3. **Salvar alterações:**
+
+3. **Faça as alterações nos arquivos e salve. Depois registre suas mudanças:**
    ```bash
+   git status
    git add .
-   git commit -m "feat: descrição do que você desenvolveu"
+   git commit -m "feat: descreva aqui de forma simples o que você fez"
    ```
-4. **Enviar para o GitHub:**
+
+4. **Envie sua branch para o GitHub:**
    ```bash
-   git push -u origin feature/nome-da-tarefa
+   git push -u origin feature/nome-da-sua-tarefa
    ```
-5. **Abrir Pull Request (PR):**
-   Vá no GitHub e abra um Pull Request para revisão da equipe.
+
+5. **Abra o Pull Request:**  
+   Vá no link [github.com/joaopedropenna/FinTrack](https://github.com/joaopedropenna/FinTrack), clique no botão verde **Compare & pull request** e avise o grupo para revisarem e aprovarem!
