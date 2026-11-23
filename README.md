@@ -11,7 +11,7 @@
 - João Pedro Penna de Oliveira Silva ✅
 - João Vitor Dias de Almeida
 - Thiago Alves do Nascimento ✅
-- Thúlio da Silva Alves
+- Thúlio da Silva Alves ✅
 
 ---
 
