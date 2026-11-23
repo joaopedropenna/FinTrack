@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24
   },
   circleGreen: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    width: 170,
+    height: 170,
+    borderRadius: 85,
     backgroundColor: '#33bc55',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 20,
     shadowColor: '#33bc55',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     color: '#0c121a',
-    marginBottom: 80
+    marginBottom: 40
   },
   primaryButton: {
     backgroundColor: '#004590',
