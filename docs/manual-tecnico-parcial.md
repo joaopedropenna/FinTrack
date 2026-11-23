@@ -316,3 +316,4 @@ Para garantir a confiabilidade da entrega acadêmica e facilitar a avaliação p
    - Caso o backend seja iniciado sem conexão com a internet ou sem o MongoDB local configurado, o servidor ativa automaticamente dados de teste em memória. Isso permite testar todas as telas e rotas de aprovação normalmente sem interrupção de serviço.
 3. **Validação da Interface Gráfica:**
    - Com o comando `npm run web`, o servidor Metro empacota a aplicação React Native para o navegador, permitindo simulação imediata do comportamento mobile, teclado numérico em tela e alternância de papéis entre Filho e Responsável.
+   - *Nota de compatibilidade:* A execução web foi adotada como ambiente padrão de avaliação para garantir compatibilidade universal e evitar conflitos de versão do aplicativo cliente Expo Go em celulares físicos (Android/iOS), cuja atualização de SDK está planejada para as próximas etapas de manutenção do projeto.
