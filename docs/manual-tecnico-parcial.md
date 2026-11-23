@@ -17,7 +17,7 @@
 
 ## 1.1 Visão Geral da Arquitetura do Sistema
 
-O **FinTrack** adota uma arquitetura em camadas baseada no modelo Cliente-Servidor (Client-Server Architecture) com desacoplamento total entre a interface de usuário e as regras de negócio. O projeto foi organizado no padrão de repositório unificado (**Monorepo**), agrupando os módulos de frontend móvel/web e o servidor REST backend sob o mesmo ciclo de versionamento.
+O **FinTrack** adota uma arquitetura em camadas baseada no modelo Cliente-Servidor (Client-Server Architecture) com separação clara entre a interface visual (frontend) e as regras de negócio (backend). O projeto foi organizado no padrão de repositório unificado (**Monorepo**), agrupando os módulos de frontend móvel/web e o servidor REST backend sob o mesmo ciclo de versionamento.
 
 ### Diagrama Arquitetural da Solução
 
@@ -49,7 +49,7 @@ flowchart TD
 1. **Camada de Apresentação (`frontend/`):**
    - Construída utilizando **React Native com Expo SDK 52**, permitindo renderização nativa para smartphones e execução web no navegador a partir de uma única base de código em JavaScript ES6+.
    - Gerenciamento de estado reativo e centralizado através de Context API (`FinanceContext`), garantindo atualização instantânea do saldo, limites e fila de aprovações.
-   - Navegação por abas focada na experiência do jovem (*Início, Metas, Aprender, Perfil*) com isolamento estrito de acesso às rotas administrativas dos pais.
+   - Navegação por abas focada na experiência do jovem (*Início, Metas, Aprender, Perfil*) com bloqueio de acesso do dependente às funções administrativas dos pais.
 
 2. **Camada de Serviços / API (`backend/`):**
    - Construída sobre o ecossistema **Node.js com Express**, estruturada em camadas bem definidas: *Rotas (Routes)*, *Controladores (Controllers)* e *Modelos (Models)*.
@@ -67,7 +67,7 @@ A seleção tecnológica do FinTrack baseou-se em critérios quantitativos avali
 
 Os fatores determinantes que orientaram a decisão arquitetural foram:
 
-1. **Manutenibilidade (Peso 1 - Mais crítico):** A unificação do ecossistema técnico em JavaScript/ES6+ no Frontend e no Backend simplifica a evolução do software, reduz o atrito de context-switching e permite que qualquer membro da equipe atue nas duas pontas da aplicação.
+1. **Manutenibilidade (Peso 1 - Mais crítico):** A unificação do ecossistema técnico em JavaScript/ES6+ no Frontend e no Backend simplifica a evolução do software, reduz a necessidade de alternar entre linguagens diferentes e permite que qualquer membro da equipe trabalhe tanto no frontend quanto no backend.
 2. **Curva de Aprendizado e Custo (Peso 2):** O conhecimento consolidado do grupo no ecossistema Web/JavaScript minimizou riscos de atraso de cronograma em comparação com o aprendizado simultâneo de linguagens como Dart e Python.
 3. **Multiplataforma Ágil com Expo SDK:** O uso do Expo permite validação imediata em dispositivos móveis reais via *Expo Go* (leitura de QR Code) e execução web simultânea sem necessidade de emuladores pesados de Android Studio/Xcode.
 
@@ -149,7 +149,7 @@ classDiagram
 * **`Dependente` (Especialização de `Usuario`):** Representa o usuário final de educação financeira. Possui atributos operacionais como `limiteGastoDiario` e a operação `solicitarAprovacao()`.
 * **`Responsavel` (Especialização de `Usuario`):** Representa o guardião/pai. Possui `cpf` para fins de assinatura e o método `assinarPlano()`.
 * **`ControlePais` (Módulo Premium):** Ativado mediante contratação pelo Responsável, disponibiliza métodos de controle parental (`definirLimite()` e `aprovarGasto()`).
-* **`Conta`:** Entidade vinculada unicamente ao Dependente, responsável pelo encapsulamento do saldo e operações financeiras fundamentais (`creditar`, `debitar`).
+* **`Conta`:** Entidade vinculada unicamente ao Dependente, responsável por armazenar o saldo e executar as operações de adicionar (`creditar`) ou gastar (`debitar`).
 * **`Transacao`:** Registros imutáveis de entradas e despesas vinculadas a uma Conta, possuindo controle de ciclo de vida (`Pendente`, `Aprovada`, `Negada`) para despesas solicitadas que demandem autorização parental.
 * **`Meta`:** Registros de objetivos de poupança com barra de evolução proporcional (ex: Videogame, Bicicleta).
 
@@ -186,7 +186,7 @@ Para evidenciar o atendimento aos critérios de engenharia de software, o mapeam
 
 ## 2.1 Padrão Arquitetural da API RESTful
 
-A camada de serviços do FinTrack foi concebida sob o padrão **REST (Representational State Transfer)**, operando de forma desacoplada do cliente frontend. As comunicações utilizam o protocolo HTTP/HTTPS, com cargas úteis (*payloads*) formatadas exclusivamente em **JSON (JavaScript Object Notation)**.
+A camada de serviços do FinTrack foi concebida sob o padrão **REST (Representational State Transfer)**, operando de forma desacoplada do cliente frontend. As comunicações utilizam o protocolo HTTP/HTTPS, com dados enviados e recebidos formatados exclusivamente em **JSON (JavaScript Object Notation)**.
 
 ### Convenções Adotadas:
 * **Métodos HTTP Semânticos:**
@@ -208,7 +208,7 @@ Abaixo estão detalhados os serviços disponibilizados pela API REST do FinTrack
 
 ### 1. Verificação de Saúde da API
 * **Rota:** `GET /api/health`
-* **Descrição:** Endpoint de diagnóstico para verificar a disponibilidade do serviço.
+* **Descrição:** Rota de teste rápido para verificar se a API está online e funcionando.
 * **Resposta Esperada (`200 OK`):**
 ```json
 {
@@ -310,9 +310,9 @@ Abaixo estão detalhados os serviços disponibilizados pela API REST do FinTrack
 
 Para garantir a confiabilidade da entrega acadêmica e facilitar a avaliação pelo corpo docente, foram implementados os seguintes procedimentos operacionais:
 
-1. **Validação Rápida da API (Smoke Test):**
-   - Com o backend ativo (`npm run backend`), abra o navegador ou ferramenta de requisições no endpoint `http://localhost:3000/api/health`. A resposta em JSON confirma a operacionalidade dos controladores.
-2. **Resiliência e Continuidade Operacional (RF06):**
-   - Caso o servidor seja iniciado sem credenciais do MongoDB Atlas ativas ou em ambiente sem conexão com a internet, o backend ativa automaticamente uma camada de persistência em memória (*in-memory mock layer*). Isso permite testar 100% dos fluxos de aprovação e listagem sem interrupção de serviço.
+1. **Teste Rápido da API (Smoke Test):**
+   - Com o backend ativo (`npm run backend`), abra o navegador ou ferramenta de requisições no endpoint `http://localhost:3000/api/health`. A resposta em JSON confirma que o servidor está rodando corretamente.
+2. **Funcionamento Offline e Modo de Contingência (RF06):**
+   - Caso o backend seja iniciado sem conexão com a internet ou sem o MongoDB local configurado, o servidor ativa automaticamente dados de teste em memória. Isso permite testar todas as telas e rotas de aprovação normalmente sem interrupção de serviço.
 3. **Validação da Interface Gráfica:**
    - Com o comando `npm run web`, o servidor Metro empacota a aplicação React Native para o navegador, permitindo simulação imediata do comportamento mobile, teclado numérico em tela e alternância de papéis entre Filho e Responsável.
