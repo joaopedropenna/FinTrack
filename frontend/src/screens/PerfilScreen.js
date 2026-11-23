@@ -11,7 +11,7 @@ import {
 import { useFinance } from '../context/FinanceContext';
 import { Ionicons, Feather, MaterialIcons } from '@expo/vector-icons';
 
-export default function PerfilScreen({ onNavigate, onSwitchToParent }) {
+export default function PerfilScreen({ onNavigate }) {
   const { streakDias, pontos } = useFinance();
 
   return (
@@ -47,26 +47,6 @@ export default function PerfilScreen({ onNavigate, onSwitchToParent }) {
             <Text style={styles.statValue}>Nível 2</Text>
             <Text style={styles.statLabel}>Poupador</Text>
           </View>
-        </View>
-
-        {/* ACESSO AO APLICATIVO DOS PAIS (RF08) */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Acesso Administrativo</Text>
-          <TouchableOpacity
-            style={styles.parentAccessCard}
-            onPress={onSwitchToParent}
-          >
-            <View style={styles.parentAccessIcon}>
-              <Ionicons name="shield-checkmark" size={24} color="#ffffff" />
-            </View>
-            <View style={styles.parentAccessTextContainer}>
-              <Text style={styles.parentAccessTitle}>Aplicativo dos Responsáveis</Text>
-              <Text style={styles.parentAccessSubtitle}>
-                Aprovação de despesas e ajuste de limites diários
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#004590" />
-          </TouchableOpacity>
         </View>
 
         {/* CONFIGURAÇÕES GERAIS */}
@@ -181,37 +161,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#0c121a',
     marginBottom: 12
-  },
-  parentAccessCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ceedff',
-    borderWidth: 1.5,
-    borderColor: '#004590',
-    borderRadius: 24,
-    padding: 16
-  },
-  parentAccessIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#004590',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12
-  },
-  parentAccessTextContainer: {
-    flex: 1
-  },
-  parentAccessTitle: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#004590'
-  },
-  parentAccessSubtitle: {
-    fontSize: 12,
-    color: '#3e4858',
-    marginTop: 2
   },
   menuItem: {
     flexDirection: 'row',

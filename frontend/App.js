@@ -55,12 +55,7 @@ export default function App() {
       case 'Aprender':
         return <AprenderScreen onNavigate={setCurrentScreen} />;
       case 'Perfil':
-        return (
-          <PerfilScreen
-            onNavigate={setCurrentScreen}
-            onSwitchToParent={() => setActiveRole('parent')}
-          />
-        );
+        return <PerfilScreen onNavigate={setCurrentScreen} />;
       case 'Home':
       default:
         return <HomeScreen onNavigate={setCurrentScreen} />;
