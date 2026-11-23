@@ -190,7 +190,7 @@ A camada de serviços do FinTrack foi concebida sob o padrão **REST (Representa
 
 ### Convenções Adotadas:
 * **Métodos HTTP Semânticos:**
-  * `GET`: Recuperação e consulta de recursos (idempotente e sem efeitos colaterais).
+  * `GET`: Recuperação e consulta de recursos (apenas leitura, sem alterar dados no sistema).
   * `POST`: Criação de novos registros (novas transações e metas).
   * `PATCH`: Modificação parcial de recursos (aprovação ou negação de status de uma despesa).
 * **Códigos de Resposta HTTP Padronizados:**
