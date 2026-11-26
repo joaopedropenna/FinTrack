@@ -32,15 +32,15 @@ export default function App() {
   // Detecta se a visualização está em dispositivo móvel real (largura < 500px) ou desktop/notebook
   const isMobileViewport = isWeb && windowWidth < 500;
 
-  // Altura e largura responsivas para a casca do aplicativo:
-  // - No celular real: ocupa 100% da tela de forma imersiva e nativa (sem borda preta simulada de mock)
-  // - No computador/notebook: renderiza a moldura de smartphone centralizada com bordas arredondadas elegantes
+  // Altura responsiva:
+  // - No celular real: preenche dinamicamente o espaço restante respeitando a barra de status do topo (notch)
+  // - No desktop/notebook: moldura fixa elegante centralizada
   const shellHeight = isWeb
-    ? (isMobileViewport ? '100%' : Math.max(520, Math.min(800, windowHeight - 96)))
+    ? (isMobileViewport ? Math.max(500, windowHeight - 110) : Math.max(520, Math.min(800, windowHeight - 96)))
     : '100%';
 
   const shellWidth = isWeb
-    ? (isMobileViewport ? '100%' : Math.min(420, windowWidth - 32))
+    ? Math.min(410, windowWidth - (isMobileViewport ? 16 : 32))
     : '100%';
 
   // Se a tela for muito baixa (ex: altura menor que 680px), alinha no topo para nunca cortar o seletor
@@ -74,8 +74,9 @@ export default function App() {
           styles.outerContainer,
           isWeb && {
             justifyContent: shouldCenter ? 'center' : 'flex-start',
-            paddingVertical: isMobileViewport ? 0 : 12,
-            paddingHorizontal: isMobileViewport ? 0 : 16
+            paddingTop: isMobileViewport ? 52 : 14,
+            paddingBottom: isMobileViewport ? 16 : 14,
+            paddingHorizontal: isMobileViewport ? 10 : 16
           }
         ]}
       >
@@ -86,9 +87,9 @@ export default function App() {
             styles.roleSwitcherContainer,
             isWeb && { maxWidth: shellWidth },
             isMobileViewport && {
-              marginHorizontal: 12,
-              marginTop: 6,
-              marginBottom: 8
+              marginHorizontal: 0,
+              marginTop: 0,
+              marginBottom: 10
             }
           ]}
         >
@@ -141,8 +142,8 @@ export default function App() {
             isWeb && {
               height: shellHeight,
               width: shellWidth,
-              borderRadius: isMobileViewport ? 0 : 36,
-              borderWidth: isMobileViewport ? 0 : 6,
+              borderRadius: 32,
+              borderWidth: 2,
               borderColor: '#1e293b',
               maxHeight: isMobileViewport ? '100%' : 800
             }

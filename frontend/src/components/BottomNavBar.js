@@ -62,6 +62,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(206, 237, 255, 0.98)',
     borderTopWidth: 1,
     borderTopColor: '#b4d6ef',
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
     justifyContent: 'center',
     paddingBottom: Platform.OS === 'web' ? 6 : 0
   },
