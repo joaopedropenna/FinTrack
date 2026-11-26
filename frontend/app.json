@@ -18,7 +18,14 @@
       }
     },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "output": "static",
+      "shortName": "FinTrack",
+      "name": "FinTrack — Educação Financeira",
+      "themeColor": "#004590",
+      "backgroundColor": "#0c121a",
+      "display": "standalone",
+      "orientation": "portrait"
     },
     "plugins": [
       "expo-asset",
