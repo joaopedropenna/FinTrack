@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function BottomNavBar({ activeTab, onSelectTab }) {
@@ -58,11 +58,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 66,
+    height: Platform.OS === 'web' ? 70 : 66,
     backgroundColor: 'rgba(206, 237, 255, 0.98)',
     borderTopWidth: 1,
     borderTopColor: '#b4d6ef',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingBottom: Platform.OS === 'web' ? 6 : 0
   },
   navList: {
     flexDirection: 'row',

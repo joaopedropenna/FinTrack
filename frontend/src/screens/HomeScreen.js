@@ -39,7 +39,7 @@ export default function HomeScreen({ onNavigate }) {
 
             <View style={styles.headerActions}>
               <View style={styles.streakBadge}>
-                <Ionicons name="flame" size={16} color="#002a67" />
+                <Ionicons name="flame" size={16} color="#f99032" />
                 <Text style={styles.streakText}>{streakDias}</Text>
               </View>
               <TouchableOpacity style={styles.iconButton}>
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   scrollContent: {
-    paddingBottom: 85
+    paddingBottom: 115
   },
   header: {
     backgroundColor: '#004590',

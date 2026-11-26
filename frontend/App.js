@@ -29,19 +29,22 @@ export default function App() {
 
   const isWeb = Platform.OS === 'web';
 
-  // Altura e largura responsivas para a casca do celular no navegador:
-  // Garante que o seletor (topo) + o celular + margens caibam SEMPRE 100% na tela do usuário,
-  // sem cortar nada em cima ou embaixo!
+  // Detecta se a visualização está em dispositivo móvel real (largura < 500px) ou desktop/notebook
+  const isMobileViewport = isWeb && windowWidth < 500;
+
+  // Altura e largura responsivas para a casca do aplicativo:
+  // - No celular real: ocupa 100% da tela de forma imersiva e nativa (sem borda preta simulada de mock)
+  // - No computador/notebook: renderiza a moldura de smartphone centralizada com bordas arredondadas elegantes
   const shellHeight = isWeb
-    ? Math.max(520, Math.min(800, windowHeight - 96))
+    ? (isMobileViewport ? '100%' : Math.max(520, Math.min(800, windowHeight - 96)))
     : '100%';
 
   const shellWidth = isWeb
-    ? Math.min(420, windowWidth - 32)
+    ? (isMobileViewport ? '100%' : Math.min(420, windowWidth - 32))
     : '100%';
 
   // Se a tela for muito baixa (ex: altura menor que 680px), alinha no topo para nunca cortar o seletor
-  const shouldCenter = isWeb ? windowHeight >= 680 : true;
+  const shouldCenter = isWeb ? (isMobileViewport ? false : windowHeight >= 680) : true;
 
   // Renderização das telas do Dependente
   const renderChildScreen = () => {
@@ -70,13 +73,25 @@ export default function App() {
         style={[
           styles.outerContainer,
           isWeb && {
-            justifyContent: shouldCenter ? 'center' : 'flex-start'
+            justifyContent: shouldCenter ? 'center' : 'flex-start',
+            paddingVertical: isMobileViewport ? 0 : 12,
+            paddingHorizontal: isMobileViewport ? 0 : 16
           }
         ]}
       >
 
         {/* SELETOR RÁPIDO DE APLICATIVO (FILHO / PAIS) PARA TESTES DA EQUIPE */}
-        <View style={[styles.roleSwitcherContainer, isWeb && { maxWidth: shellWidth }]}>
+        <View
+          style={[
+            styles.roleSwitcherContainer,
+            isWeb && { maxWidth: shellWidth },
+            isMobileViewport && {
+              marginHorizontal: 12,
+              marginTop: 6,
+              marginBottom: 8
+            }
+          ]}
+        >
           <TouchableOpacity
             style={[
               styles.roleButton,
@@ -95,7 +110,7 @@ export default function App() {
               ]}
               numberOfLines={1}
             >
-              👦 App do Filho (Léo)
+              👦 Filho (Léo)
             </Text>
           </TouchableOpacity>
 
@@ -114,7 +129,7 @@ export default function App() {
               ]}
               numberOfLines={1}
             >
-              🛡️ App dos Pais (Responsável)
+              🛡️ Pais (Controle)
             </Text>
           </TouchableOpacity>
         </View>
@@ -125,7 +140,11 @@ export default function App() {
             styles.appShell,
             isWeb && {
               height: shellHeight,
-              width: shellWidth
+              width: shellWidth,
+              borderRadius: isMobileViewport ? 0 : 36,
+              borderWidth: isMobileViewport ? 0 : 6,
+              borderColor: '#1e293b',
+              maxHeight: isMobileViewport ? '100%' : 800
             }
           ]}
         >
