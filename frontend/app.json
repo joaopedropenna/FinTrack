@@ -20,6 +20,7 @@
     "web": {
       "bundler": "metro",
       "output": "single",
+      "favicon": "./public/favicon-32.png",
       "shortName": "FinTrack",
       "name": "FinTrack — Educação Financeira",
       "themeColor": "#004590",

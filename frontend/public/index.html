@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no" />
+    <title>FinTrack — Educação Financeira</title>
+    <meta name="description" content="FinTrack — Aplicativo de educação financeira e controle parental para crianças e jovens." />
+    
+    <!-- PWA & Mobile Web App Meta Tags -->
+    <meta name="theme-color" content="#004590" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="FinTrack" />
+    
+    <!-- iOS Safari PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FinTrack" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
+    
+    <!-- Manifest & Icons -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+
+    <!-- Style reset & App viewport styling -->
+    <style id="expo-reset">
+      html,
+      body {
+        height: 100%;
+        background-color: #0c121a;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+        background-color: #0c121a;
+      }
+      input, textarea {
+        user-select: auto;
+        -webkit-user-select: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <noscript>
+      É necessário habilitar o JavaScript para executar o FinTrack.
+    </noscript>
+    <div id="root"></div>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').then(
+            function(reg) {
+              console.log('FinTrack PWA registrado com sucesso:', reg.scope);
+            },
+            function(err) {
+              console.log('Erro ao registrar PWA Service Worker:', err);
+            }
+          );
+        });
+      }
+    </script>
+  </body>
+</html>

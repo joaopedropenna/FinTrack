@@ -10,6 +10,27 @@ O **FinTrack** é uma solução digital criada para apoiar crianças e jovens no
 
 ---
 
+## 🌐 Acesso Online Imediato (Demonstração / PWA)
+
+O aplicativo está hospedado e disponível em produção para teste e avaliação imediata, sem necessidade de clonar o repositório ou instalar dependências:
+
+👉 **Link de Acesso Direto:** [https://fintrack-kiyt.onrender.com](https://fintrack-kiyt.onrender.com)
+
+### 📱 Como instalar como App (PWA) no Celular:
+* **No iPhone (iOS / Safari):**
+  1. Abra o link [https://fintrack-kiyt.onrender.com](https://fintrack-kiyt.onrender.com) no Safari.
+  2. Toque no ícone de **Compartilhar** (quadrado com seta para cima na barra inferior).
+  3. Role para baixo e selecione **"Adicionar à Tela de Início"**.
+  4. O ícone oficial do FinTrack será adicionado à sua tela inicial e abrirá em **tela cheia (standalone)**, com experiência idêntica a um app nativo da App Store.
+* **No Android (Google Chrome):**
+  1. Abra o link [https://fintrack-kiyt.onrender.com](https://fintrack-kiyt.onrender.com) no Chrome.
+  2. Toque nos três pontinhos no canto superior e selecione **"Instalar aplicativo"** ou **"Adicionar à tela inicial"**.
+  3. O app será instalado diretamente no smartphone.
+* **No Computador (Chrome / Edge):**
+  1. Clique no ícone de instalação no canto da barra de endereços para usar em janela dedicada.
+
+---
+
 ## 🚀 Funcionalidades e Telas do Aplicativo
 
 O FinTrack possui duas experiências integradas e focadas nas necessidades de cada usuário:
