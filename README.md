@@ -65,7 +65,9 @@ O FinTrack possui duas experiências integradas e focadas nas necessidades de ca
 
 ---
 
-## 💻 Como Executar o Projeto
+## 💻 Como Executar o Projeto (Web Localmente)
+
+Caso deseje baixar o código-fonte e executar a aplicação localmente no seu computador (além do link online acima):
 
 ### Pré-requisitos:
 * Ter o **Node.js** instalado (versão 18 ou superior).
