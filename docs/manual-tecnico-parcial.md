@@ -212,27 +212,40 @@ Para evidenciar o atendimento aos critérios de engenharia de software, o mapeam
 A camada de serviços do FinTrack foi concebida sob o padrão **REST (Representational State Transfer)**, operando de forma desacoplada do cliente frontend. As comunicações utilizam o protocolo HTTP/HTTPS, com dados enviados e recebidos formatados exclusivamente em **JSON (JavaScript Object Notation)**.
 
 ### Convenções Adotadas:
-* **Métodos HTTP Semânticos:**
-  * `GET`: Recuperação e consulta de recursos (apenas leitura, sem alterar dados no sistema).
-  * `POST`: Criação de novos registros (novas transações e metas).
-  * `PATCH`: Modificação parcial de recursos (aprovação ou negação de status de uma despesa).
-* **Códigos de Resposta HTTP Padronizados:**
-  * `200 OK`: Requisição processada com sucesso.
-  * `201 Created`: Novo recurso criado com êxito.
-  * `400 Bad Request`: Requisição inválida ou dados obrigatórios ausentes.
-  * `404 Not Found`: Recurso não localizado pelo identificador.
-  * `500 Internal Server Error`: Erro inesperado no processamento do servidor.
+- **Métodos HTTP Semânticos:**
+  - `GET`: Recuperação e consulta de recursos (apenas leitura, sem alterar dados no sistema).
+  - `POST`: Criação de novos registros (novas transações e metas).
+  - `PATCH`: Modificação parcial de recursos (aprovação ou negação de status de uma despesa).
+- **Códigos de Resposta HTTP Padronizados:**
+  - `200 OK`: Requisição processada com sucesso.
+  - `201 Created`: Novo recurso criado com êxito.
+  - `400 Bad Request`: Requisição inválida, campos obrigatórios ausentes ou valores fora das regras de validação.
+  - `404 Not Found`: Recurso não localizado pelo identificador informado.
+  - `500 Internal Server Error`: Erro inesperado no processamento do servidor.
 
 ---
 
-## 2.2 Catálogo e Especificação dos Endpoints
+## 2.2 Tabela Resumo dos Endpoints da API
 
-Abaixo estão detalhados os serviços disponibilizados pela API REST do FinTrack:
+| Método | Rota | Descrição | Status de Sucesso | Status de Erro |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/health` | Verifica disponibilidade e status da API | `200 OK` | `500 Internal Server Error` |
+| `GET` | `/api/transacoes` | Lista as transações financeiras registradas | `200 OK` | `500 Internal Server Error` |
+| `POST` | `/api/transacoes` | Cadastra uma nova solicitação de despesa (RF03) | `201 Created` | `400 Bad Request`, `500 Internal Server Error` |
+| `GET` | `/api/metas` | Consulta metas de poupança e progresso percentual (RF02) | `200 OK` | `500 Internal Server Error` |
+| `GET` | `/api/aprovacoes/pendentes` | Lista solicitações de gastos pendentes de aprovação parental (RF08) | `200 OK` | `500 Internal Server Error` |
+| `PATCH` | `/api/aprovacoes/:id/aprovar` | Aprova despesa (`Aprovada`) e debita saldo do dependente | `200 OK` | `400 Bad Request`, `404 Not Found`, `500 Internal Server Error` |
+| `PATCH` | `/api/aprovacoes/:id/negar` | Nega despesa (`Negada`) mantendo o saldo inalterado | `200 OK` | `400 Bad Request`, `404 Not Found`, `500 Internal Server Error` |
+
+---
+
+## 2.3 Catálogo e Especificação dos Endpoints
 
 ### 1. Verificação de Saúde da API
-* **Rota:** `GET /api/health`
-* **Descrição:** Rota de teste rápido para verificar se a API está online e funcionando.
-* **Resposta Esperada (`200 OK`):**
+- **Rota:** `GET /api/health`
+- **Descrição:** Rota de teste rápido para verificar se a API está online e funcionando.
+- **Resposta Esperada (`200 OK`):**
+
 ```json
 {
   "status": "online",
@@ -240,27 +253,41 @@ Abaixo estão detalhados os serviços disponibilizados pela API REST do FinTrack
   "version": "1.0.0",
   "timestamp": "2026-11-22T21:00:00.000Z"
 }
-```
 
----
+2. Gestão de Transações (/api/transacoes)
+Listar Transações: GET /api/transacoes
 
-### 2. Gestão de Transações
-* **Listar Transações:** `GET /api/transacoes`
-  * **Descrição:** Retorna o histórico de transações financeiras registradas.
-  * **Resposta (`200 OK`):** Lista de transações com `id`, `descricao`, `valor`, `categoria`, `tipo` e `status`.
+Descrição: Retorna o histórico de transações financeiras registradas.
 
-* **Cadastrar Nova Despesa:** `POST /api/transacoes`
-  * **Descrição:** Registra uma nova solicitação de despesa criada pelo dependente (RF03).
-  * **Corpo da Requisição (`Request Body`):**
-```json
+Resposta (200 OK):
+
+JSON
+[
+  {
+    "id": "6740ea318c",
+    "descricao": "Jogo Digital",
+    "valor": 70.00,
+    "categoria": "Jogos",
+    "tipo": "Despesa",
+    "status": "Pendente",
+    "data": "2026-11-22T21:00:00.000Z"
+  }
+]
+Cadastrar Nova Despesa: POST /api/transacoes
+
+Descrição: Registra uma nova solicitação de despesa criada pelo dependente após validar campos obrigatórios e valor (RF03).
+
+Corpo da Requisição (Request Body):
+
+JSON
 {
   "descricao": "Jogo Digital",
   "valor": 70.00,
   "categoria": "Jogos"
 }
-```
-  * **Resposta (`201 Created`):**
-```json
+Resposta (201 Created):
+
+JSON
 {
   "id": "6740ea318c",
   "descricao": "Jogo Digital",
@@ -270,15 +297,20 @@ Abaixo estão detalhados os serviços disponibilizados pela API REST do FinTrack
   "status": "Pendente",
   "data": "2026-11-22T21:00:00.000Z"
 }
-```
+Erro de Validação (400 Bad Request): Retornado quando descricao está vazia/ausente ou valor é inválido/menor ou igual a zero:
 
----
+JSON
+{
+  "error": "Descrição é obrigatória e o valor deve ser maior que zero."
+}
+3. Gestão de Metas de Poupança (/api/metas)
+Consultar Metas: GET /api/metas
 
-### 3. Gestão de Metas de Poupança
-* **Consultar Metas:** `GET /api/metas`
-  * **Descrição:** Retorna as metas de poupança cadastradas, com cálculo de progresso percentual (RF02).
-  * **Resposta (`200 OK`):**
-```json
+Descrição: Retorna as metas de poupança cadastradas, com cálculo de progresso percentual (RF02).
+
+Resposta (200 OK):
+
+JSON
 [
   {
     "id": "1",
@@ -299,44 +331,94 @@ Abaixo estão detalhados os serviços disponibilizados pela API REST do FinTrack
     "icone": "bicycle"
   }
 ]
-```
+4. Controle Parental e Aprovações (/api/aprovacoes — RF08)
+Listar Solicitações Pendentes: GET /api/aprovacoes/pendentes
 
----
+Descrição: Retorna todas as solicitações de gastos pendentes aguardando decisão dos responsáveis.
 
-### 4. Controle Parental e Aprovações (Módulo Responsável - RF08)
-* **Listar Solicitações Pendentes:** `GET /api/aprovacoes/pendentes`
-  * **Descrição:** Retorna todas as solicitações de gastos aguardando decisão dos pais.
+Resposta (200 OK):
 
-* **Aprovar Despesa:** `PATCH /api/aprovacoes/:id/aprovar`
-  * **Descrição:** Atualiza o status da despesa para `Aprovada`, debitando o valor do saldo do dependente.
-  * **Resposta (`200 OK`):**
-```json
+JSON
+[
+  {
+    "id": "6740ea318c",
+    "descricao": "Jogo Digital",
+    "valor": 70.00,
+    "categoria": "Jogos",
+    "tipo": "Despesa",
+    "status": "Pendente",
+    "data": "2026-11-22T21:00:00.000Z"
+  }
+]
+Aprovar Despesa: PATCH /api/aprovacoes/:id/aprovar
+
+Descrição: Localiza a transação por :id, atualiza o status para Aprovada e debita o valor do saldo do dependente.
+
+Resposta (200 OK):
+
+JSON
 {
   "message": "Transação aprovada com sucesso!",
-  "id": "1"
+  "id": "6740ea318c",
+  "status": "Aprovada"
 }
-```
+Negar Despesa: PATCH /api/aprovacoes/:id/negar
 
-* **Negar Despesa:** `PATCH /api/aprovacoes/:id/negar`
-  * **Descrição:** Rejeita a solicitação de gasto, mantendo o saldo inalterado.
-  * **Resposta (`200 OK`):**
-```json
+Descrição: Localiza a transação por :id, atualiza o status para Negada e mantém o saldo do dependente inalterado.
+
+Resposta (200 OK):
+
+JSON
 {
   "message": "Transação negada.",
-  "id": "1"
+  "id": "6740ea318c",
+  "status": "Negada"
 }
-```
+Recurso Não Encontrado (404 Not Found): Retornado em PATCH /api/aprovacoes/:id/aprovar ou PATCH /api/aprovacoes/:id/negar quando :id não corresponde a nenhuma despesa existente:
+
+JSON
+{
+  "error": "Transação não encontrada."
+}
+2.4 Cenários de Erro (400 Bad Request e 404 Not Found)
+400 Bad Request:
+
+Descrição vazia ou ausente em POST /api/transacoes: Requisição enviada sem descrição válida.
+
+Valor inválido em POST /api/transacoes: Requisição enviada com valor ausente, não numérico, zero ou negativo.
+
+Parâmetros inválidos na requisição: Dados enviados fora do formato esperado pela validação do controlador.
+
+404 Not Found:
+
+Despesa inexistente na aprovação ou negação: Chamada para PATCH /api/aprovacoes/:id/aprovar ou PATCH /api/aprovacoes/:id/negar com :id inexistente.
+
+2.5 Procedimentos de Verificação e Validação Técnica
+Para garantir a confiabilidade da entrega acadêmica e facilitar a avaliação pelo corpo docente, foram implementados os seguintes procedimentos operacionais:
+
+Teste Rápido da API (Smoke Test):
+
+Com o backend ativo (npm run backend), abra o navegador ou ferramenta de requisições no endpoint http://localhost:3000/api/health. A resposta em JSON confirma que o servidor está rodando corretamente.
+
+Funcionamento Offline e Modo de Contingência (RF06):
+
+Caso o backend seja iniciado sem conexão com a internet ou sem o MongoDB local configurado, o servidor ativa automaticamente dados de teste em memória. Isso permite testar todas as telas e rotas de aprovação normalmente sem interrupção de serviço.
+
+Validação da Interface Gráfica:
+
+Com o comando npm run web, o servidor Metro empacota a aplicação React Native para o navegador, permitindo simulação imediata do comportamento mobile, teclado numérico em tela e alternância de papéis entre Filho e Responsável.
+
+Nota de compatibilidade: A execução web foi adotada como ambiente padrão de avaliação para garantir compatibilidade universal e evitar conflitos de versão do aplicativo cliente Expo Go em celulares físicos (Android/iOS), cuja atualização de SDK está planejada para as próximas etapas de manutenção do projeto.
+
 
 ---
 
-## 2.3 Procedimentos de Verificação e Validação Técnica
+## Comandos Git em Markdown
 
-Para garantir a confiabilidade da entrega acadêmica e facilitar a avaliação pelo corpo docente, foram implementados os seguintes procedimentos operacionais:
-
-1. **Teste Rápido da API (Smoke Test):**
-   - Com o backend ativo (`npm run backend`), abra o navegador ou ferramenta de requisições no endpoint `http://localhost:3000/api/health`. A resposta em JSON confirma que o servidor está rodando corretamente.
-2. **Funcionamento Offline e Modo de Contingência (RF06):**
-   - Caso o backend seja iniciado sem conexão com a internet ou sem o MongoDB local configurado, o servidor ativa automaticamente dados de teste em memória. Isso permite testar todas as telas e rotas de aprovação normalmente sem interrupção de serviço.
-3. **Validação da Interface Gráfica:**
-   - Com o comando `npm run web`, o servidor Metro empacota a aplicação React Native para o navegador, permitindo simulação imediata do comportamento mobile, teclado numérico em tela e alternância de papéis entre Filho e Responsável.
-   - *Nota de compatibilidade:* A execução web foi adotada como ambiente padrão de avaliação para garantir compatibilidade universal e evitar conflitos de versão do aplicativo cliente Expo Go em celulares físicos (Android/iOS), cuja atualização de SDK está planejada para as próximas etapas de manutenção do projeto.
+```bash
+git checkout main
+git pull origin main
+git checkout -b docs/manual-secao-2
+git add docs/manual-tecnico-parcial.md
+git commit -m "docs: atualiza Secao 2 do manual tecnico com validacoes reais e tabela de endpoints"
+git push -u origin docs/manual-secao-2
