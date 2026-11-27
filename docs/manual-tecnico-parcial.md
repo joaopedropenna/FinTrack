@@ -59,6 +59,29 @@ flowchart TD
 3. **Camada de Persistência (Banco de Dados):**
    - Hospedada na nuvem através do **MongoDB Atlas**, provendo escalabilidade horizontal, alta disponibilidade e flexibilidade para modelos de dados de documentos hierárquicos (como o relacionamento entre dependentes e transações).
 
+### Estrutura do Monorepo
+
+```text
+FinTrack/
+├── frontend/                   # Aplicativo React Native (Expo SDK 52 / Web PWA)
+│   ├── App.js                  # Casca responsiva e roteamento por perfil
+│   ├── public/                 # Manifesto PWA, Service Worker e ícones
+│   └── src/
+│       ├── components/         # Componentes reutilizáveis (ex: BottomNavBar)
+│       ├── context/            # Estado global reativo (FinanceContext)
+│       └── screens/            # Telas do Dependente e Painel dos Pais
+├── backend/                    # API RESTful (Node.js + Express + Mongoose)
+│   └── src/
+│       ├── config/             # Conexão com MongoDB Atlas e fallback em memória
+│       ├── controllers/        # Regras de negócio (transações, metas, aprovações)
+│       ├── models/             # Schemas Mongoose (Usuario, Conta, Transacao, Meta)
+│       ├── routes/             # Definição dos endpoints REST
+│       └── server.js           # Ponto de entrada do servidor HTTP
+├── docs/                       # Documentação técnica, diagramas e requisitos
+├── package.json                # Scripts unificados do monorepo (install:all, web, backend)
+└── README.md                   # Apresentação pública e guia de execução
+```
+
 ---
 
 ## 1.2 Justificativa Tecnológica (Alinhamento com a Matriz de Decisão)
@@ -163,7 +186,7 @@ Para evidenciar o atendimento aos critérios de engenharia de software, o mapeam
 
 | Código | Requisito Oficial | Componente / Implementação Técnica |
 |---|---|---|
-| **RF01** | Cadastro de usuários e seleção de versão (Basic/Premium) | `Usuario.js` / Modelagem de perfis `Dependente` e `Responsavel` com campo `plano`. |
+| **RF01** | Cadastro de usuários e seleção de versão (Basic/Premium) | Modelagem pronta em `Usuario.js` (`Dependente` e `Responsavel` com campo `plano`). **Escopo parcial:** telas de Login e Cadastro com seleção automática de perfil planejadas para a **entrega final** (atualmente simulado pelo seletor de perfil no topo). |
 | **RF02** | Estabelecimento de metas financeiras | `Meta.js`, tela `MetasScreen.js` e cards com barra de progresso proporcional no dashboard. |
 | **RF03** | Registro e visualização de gastos diários | `NovaDespesaScreen.js` com teclado numérico em tela, categorização e display de limite. |
 | **RF04** | Dicas financeiras inteligentes (IA) | Card "Dica do Dia com IA" integrado ao dashboard (`HomeScreen.js`). |
@@ -177,7 +200,7 @@ Para evidenciar o atendimento aos critérios de engenharia de software, o mapeam
 |---|---|---|
 | **RNF01** | Tempo de resposta inferior a 1 segundo | Arquitetura REST stateless com Node.js/Express e respostas JSON compactas. |
 | **RNF02** | Interface intuitiva e interativa | Aplicativo React Native fiel ao protótipo de alta fidelidade do Figma, com componentes táteis e layout responsivo. |
-| **RNF03** | Acesso por senha ou autenticação segura | Modelagem de autenticação com senhas criptografadas e separação estrita de perfis. |
+| **RNF03** | Acesso por senha ou autenticação segura | Modelagem de credenciais e separação estrita de perfis prontas. **Escopo parcial:** fluxo visual de Login e autenticação via token planejados para a **entrega final** do projeto. |
 | **RNF04** | Proteção e backup de dados em nuvem | Banco de dados hospedado em nuvem com réplicas e backup automatizado via MongoDB Atlas. |
 
 ---

@@ -84,7 +84,7 @@ npm run web
 *O FinTrack abrirá automaticamente no seu navegador padrão.*
 
 > 💡 **Dica de Avaliação:**  
-> No topo da interface web há o seletor de papel (**👦 App do Filho** vs **🛡️ App dos Pais**). Ele permite simular tanto a solicitação de uma despesa pelo jovem quanto a aprovação ou negação imediata pelos pais na mesma sessão.
+> No topo da interface há o seletor temporário de perfil (**👦 Filho (Léo)** vs **🛡️ Pais (Controle)**). Ele foi incluído nesta entrega parcial para permitir testar na mesma sessão tanto a solicitação de despesas pelo dependente quanto a aprovação ou negação imediata pelos pais, sem exigir cadastro prévio.
 
 > 📌 **Ambiente Recomendado para Avaliação (Execução Web):**  
 > A forma oficial e recomendada para testar e avaliar a aplicação é pelo navegador com o comando **`npm run web`**.  
@@ -93,6 +93,14 @@ npm run web
 > O projeto foi desenvolvido na versão estável do **Expo SDK 52**. Nos celulares (seja Android pela Google Play ou iPhone pela App Store), o aplicativo *Expo Go* é atualizado automaticamente para as versões mais novas (como o SDK 58). Essa diferença de versões entre o código do projeto e o aplicativo instalado no celular gera um erro de incompatibilidade ao escanear o QR Code (que será solucionado nas próximas etapas de manutenção do projeto).  
 > 
 > Por isso, a execução via **Web (`npm run web`)** é a ideal para a correção: ela já funciona direto no computador, não depende de versões do celular e reproduz fielmente a tela de smartphone, com botões, componentes visuais e o seletor de papéis.
+
+---
+
+## 🗺️ Próximos Passos (Evoluções Planejadas)
+
+Como esta é uma **entrega parcial** focada nos fluxos centrais de educação financeira e controle parental, as seguintes evoluções estão planejadas para a **entrega final** do projeto:
+* **Tela de Login e Cadastro (RF01 / RNF03):** Substituição do seletor temporário de perfil no topo por um fluxo completo de autenticação e cadastro de contas, identificando automaticamente se o usuário logado é **Dependente** ou **Responsável** e vinculando a conta familiar.
+* **Autenticação Segura:** Implementação de criptografia de senhas e sessões autenticadas entre o aplicativo e a API REST.
 
 ---
 
