@@ -1,0 +1,78 @@
+@baseUrl = http://localhost:3000
+# Copie IDs de duas despesas retornadas por GET /api/aprovacoes/pendentes.
+@despesaAprovarId = COLE_AQUI_ID_PENDENTE
+@despesaNegarId = COLE_AQUI_OUTRO_ID_PENDENTE
+
+### Saúde da API — 200
+GET {{baseUrl}}/api/health
+Accept: application/json
+
+### Listar transações — 200
+GET {{baseUrl}}/api/transacoes
+Accept: application/json
+
+### Criar transação válida — 201; cria despesa pendente
+POST {{baseUrl}}/api/transacoes
+Content-Type: application/json
+
+{
+  "descricao": "Material escolar",
+  "valor": 89.90,
+  "categoria": "Educação"
+}
+
+### Transação com valor negativo — 400
+POST {{baseUrl}}/api/transacoes
+Content-Type: application/json
+
+{
+  "descricao": "Valor inválido",
+  "valor": -10,
+  "categoria": "Outros"
+}
+
+### Transação com descrição vazia — 400
+POST {{baseUrl}}/api/transacoes
+Content-Type: application/json
+
+{
+  "descricao": "   ",
+  "valor": 10,
+  "categoria": "Outros"
+}
+
+### Listar metas — 200
+GET {{baseUrl}}/api/metas
+Accept: application/json
+
+### Criar meta — 201 quando salva com sucesso
+POST {{baseUrl}}/api/metas
+Content-Type: application/json
+
+{
+  "titulo": "Notebook",
+  "valorTotal": 2500,
+  "valorAtual": 300,
+  "icone": "💻",
+  "cor": "#004590"
+}
+
+### Despesas pendentes de aprovação — 200
+GET {{baseUrl}}/api/aprovacoes/pendentes
+Accept: application/json
+
+### Aprovar despesa pendente — 200; informe um ID retornado acima
+PATCH {{baseUrl}}/api/aprovacoes/{{despesaAprovarId}}/aprovar
+Content-Type: application/json
+
+### Negar outra despesa pendente — 200; informe outro ID retornado acima
+PATCH {{baseUrl}}/api/aprovacoes/{{despesaNegarId}}/negar
+Content-Type: application/json
+
+### ID malformado — 400
+PATCH {{baseUrl}}/api/aprovacoes/id-invalido/aprovar
+Content-Type: application/json
+
+### ID válido, mas sem despesa correspondente — 404
+PATCH {{baseUrl}}/api/aprovacoes/000000000000000000000000/aprovar
+Content-Type: application/json
