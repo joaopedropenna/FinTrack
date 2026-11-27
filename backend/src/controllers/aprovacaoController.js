@@ -1,50 +1,100 @@
+
+const mongoose = require('mongoose');
 const Transacao = require('../models/Transacao');
 
-// Mocks iniciais sincronizados com a tela de Controle dos Pais do Figma
-let mockPendentes = [
-  { id: '1', descricao: 'Jogos', valor: 70.0, categoria: 'Jogos', icone: '🎮' },
-  { id: '2', descricao: 'Comida', valor: 25.0, categoria: 'Comida', icone: '🍴' },
-  { id: '3', descricao: 'Cinema', valor: 40.0, categoria: 'Cinema', icone: '🎬' }
-];
-
+// Lista as despesas pendentes de aprovação
 exports.listarPendentes = async (req, res) => {
   try {
-    const pendentes = await Transacao.find({ status: 'Pendente' });
-    if (pendentes && pendentes.length > 0) {
-      return res.json(pendentes);
-    }
-    return res.json(mockPendentes);
+    const pendentes = await Transacao.find({
+      tipo: 'Despesa',
+      status: 'Pendente'
+    }).sort({ data: -1 });
+
+    return res.status(200).json(pendentes);
+
   } catch (error) {
-    return res.json(mockPendentes);
+    console.error('Erro ao listar despesas pendentes:', error);
+
+    return res.status(500).json({
+      error: 'Não foi possível listar as despesas pendentes.'
+    });
   }
 };
 
-exports.aprovarTransacao = async (req, res) => {
+// Atualiza o status de uma despesa
+const atualizarStatus = async (req, res, novoStatus) => {
   const { id } = req.params;
+
+  // Valida o ID recebido pela URL
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      error: 'ID da despesa inválido.'
+    });
+  }
+
   try {
-    const transacao = await Transacao.findByIdAndUpdate(id, { status: 'Aprovada' }, { new: true });
-    if (transacao) {
-      return res.json({ message: 'Transação aprovada com sucesso!', transacao });
+    // Atualiza somente despesas que ainda estão pendentes
+    const transacao = await Transacao.findOneAndUpdate(
+      {
+        _id: id,
+        tipo: 'Despesa',
+        status: 'Pendente'
+      },
+      {
+        $set: { status: novoStatus }
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    // Verifica se a despesa foi encontrada
+    if (!transacao) {
+      const existente = await Transacao.findById(id);
+
+      if (!existente) {
+        return res.status(404).json({
+          error: 'Despesa não encontrada.'
+        });
+      }
+
+      if (existente.tipo !== 'Despesa') {
+        return res.status(400).json({
+          error: 'Apenas despesas podem ser aprovadas ou negadas.'
+        });
+      }
+
+      return res.status(409).json({
+        error: 'Esta despesa já foi processada.'
+      });
     }
-    mockPendentes = mockPendentes.filter(item => item.id !== id);
-    return res.json({ message: 'Transação aprovada com sucesso (mock)!', id });
+
+    const acao = novoStatus === 'Aprovada'
+      ? 'aprovada'
+      : 'negada';
+
+    return res.status(200).json({
+      message: `Despesa ${acao} com sucesso!`,
+      transacao
+    });
+
   } catch (error) {
-    mockPendentes = mockPendentes.filter(item => item.id !== id);
-    return res.json({ message: 'Transação aprovada com sucesso (fallback)!', id });
+    console.error('Erro ao atualizar despesa:', error);
+
+    return res.status(500).json({
+      error: 'Erro interno ao atualizar a despesa.'
+    });
   }
 };
 
-exports.negarTransacao = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const transacao = await Transacao.findByIdAndUpdate(id, { status: 'Negada' }, { new: true });
-    if (transacao) {
-      return res.json({ message: 'Transação negada.', transacao });
-    }
-    mockPendentes = mockPendentes.filter(item => item.id !== id);
-    return res.json({ message: 'Transação negada (mock).', id });
-  } catch (error) {
-    mockPendentes = mockPendentes.filter(item => item.id !== id);
-    return res.json({ message: 'Transação negada (fallback).', id });
-  }
+// Aprovar despesa
+exports.aprovarTransacao = (req, res) => {
+  return atualizarStatus(req, res, 'Aprovada');
 };
+
+// Negar despesa
+exports.negarTransacao = (req, res) => {
+  return atualizarStatus(req, res, 'Negada');
+};
+
